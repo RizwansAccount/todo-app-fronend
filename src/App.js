@@ -70,7 +70,11 @@ const App = () => {
       <div className='flex flex-col items-center h-full w-full'>
 
         <div className='w-[400px] mt-[10vh] flex justify-between gap-[8px]'>
-          <input value={note} onChange={(e) => setNote(e.target.value)} className='border pl-[8px] py-[6px] w-full text-[14px]' />
+          <input value={note} placeholder='write note'
+            onKeyDown={(e) => { if (e.key === 'Enter') { fnAddNote(); } }}
+            onChange={(e) => setNote(e.target.value)}
+            className='border pl-[8px] py-[6px] w-full text-[14px]'
+          />
           <button className='bg-[#4A6DA7] px-[8px] rounded-[4px]' onClick={fnAddNote}>
             <i className="ri-add-line text-white"></i>
           </button>
