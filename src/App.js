@@ -81,25 +81,24 @@ const App = () => {
         </div>
 
         <div className='bg-[#F2F2F2] rounded-[8px] w-[400px] h-[60vh] overflow-y-auto mt-[20px]' >
-          {loading ? <span> {'Loading...'} </span>
-            : isExistNotes ? allNotes?.map((item) => {
-              const noteId = item?._id;
-              return (
-                <div className='flex justify-between p-[12px]' key={noteId}>
-                  <span className='text-[14px] cursor-pointer' >{item?.note}</span>
-                  <div className='flex gap-[8px]'>
-                    <button onClick={() => { setUpdateNote(item?.note); setUpdateModal({ status: true, id: noteId }) }} >
-                      <i class="ri-pencil-line"></i>
-                    </button>
-                    <button onClick={() => fnDeleteNote(noteId)} >
-                      <i class="ri-delete-bin-6-line"></i>
-                    </button>
-                  </div>
+          {isExistNotes ? allNotes?.map((item) => {
+            const noteId = item?._id;
+            return (
+              <div className='flex justify-between p-[12px]' key={noteId}>
+                <span className='text-[14px] cursor-pointer' >{item?.note}</span>
+                <div className='flex gap-[8px]'>
+                  <button onClick={() => { setUpdateNote(item?.note); setUpdateModal({ status: true, id: noteId }) }} >
+                    <i class="ri-pencil-line"></i>
+                  </button>
+                  <button onClick={() => fnDeleteNote(noteId)} >
+                    <i class="ri-delete-bin-6-line"></i>
+                  </button>
                 </div>
-              )
-            }) : <div className='flex w-full h-full items-center justify-center' >
-              {'No Notes'}
-            </div>}
+              </div>
+            )
+          }) : <div className='flex w-full h-full items-center justify-center' >
+            {'No Notes'}
+          </div>}
         </div>
 
       </div>
