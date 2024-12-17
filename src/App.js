@@ -45,7 +45,7 @@ const App = () => {
 
   const fnDeleteNote = async (id) => {
     try {
-      setLoading({ type: "delete" });
+      setLoading({ type: "delete", id });
       await fnApiCall({ endpoint: `note/${id}`, method: 'DELETE' });
     } catch (error) {
       console.log(error)
@@ -94,7 +94,7 @@ const App = () => {
                     <i class="ri-pencil-line"></i>
                   </button>
                   <button onClick={() => fnDeleteNote(noteId)} >
-                    <i class="ri-delete-bin-6-line"></i>
+                    {(loading.type === 'delete' && loading?.id == noteId ) ? 'loading' : <i class="ri-delete-bin-6-line"></i>}
                   </button>
                 </div>
               </div>
