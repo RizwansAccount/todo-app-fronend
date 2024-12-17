@@ -78,7 +78,7 @@ const App = () => {
             onChange={(e) => setNote(e.target.value)}
             className='border pl-[8px] py-[6px] w-full text-[14px]'
           />
-          <button className='bg-[#4A6DA7] px-[8px] rounded-[4px] flex items-center justify-center text-[10px] font-bold text-white min-w-[60px]' onClick={fnAddNote}>
+          <button className='bg-[#4A6DA7] px-[8px] rounded-[4px] flex items-center justify-center text-[11px] font-bold text-white min-w-[60px]' onClick={fnAddNote}>
             {loading.type === 'add' ? 'Loading' : 'Add'}
           </button>
         </div>
@@ -87,7 +87,7 @@ const App = () => {
           {isExistNotes ? allNotes?.map((item) => {
             const noteId = item?._id;
             return (
-              <div className='flex justify-between p-[12px]' key={noteId}>
+              <div className='flex justify-between p-[14px]' key={noteId}>
                 <span className='text-[14px] cursor-pointer' >{item?.note}</span>
                 <div className='flex gap-[8px]'>
                   <button onClick={() => { setUpdateNote(item?.note); setUpdateModal({ status: true, id: noteId }) }} >
