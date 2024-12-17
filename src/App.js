@@ -6,7 +6,7 @@ const App = () => {
 
   const { fnApiCall } = useApiManager();
 
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState({ type: "" });
   const [allNotes, setAllNotes] = useState([]);
   const [note, setNote] = useState('');
   const [updateNote, setUpdateNote] = useState('');
@@ -18,24 +18,24 @@ const App = () => {
 
   const fnGetAllNotes = async () => {
     try {
-      setLoading(true);
       const result = await fnApiCall('note');
       setAllNotes(result?.data);
     } catch (error) {
       console.log('error ========>', error);
     } finally {
-      setLoading(false);
+      setLoading({ type: "" });
     }
   };
 
   const fnAddNote = async () => {
     if (note) {
       try {
+        setLoading({ type: "add" });
+        setNote('');
         await fnApiCall({ endpoint: 'note', method: 'POST', body: { note } });
       } catch (error) {
         console.log(error)
       } finally {
-        setNote('');
         fnGetAllNotes();
       }
     } else {
@@ -45,22 +45,25 @@ const App = () => {
 
   const fnDeleteNote = async (id) => {
     try {
+      setLoading({ type: "delete" });
       await fnApiCall({ endpoint: `note/${id}`, method: 'DELETE' });
-      fnGetAllNotes();
     } catch (error) {
       console.log(error)
+    } finally {
+      fnGetAllNotes();
     }
   };
 
   const fnUpdateNote = async () => {
     try {
+      setLoading({ type: "update" });
       await fnApiCall({ endpoint: `note/${updateModal.id}`, method: 'PATCH', body: { note: updateNote } });
     } catch (error) {
       console.log(error)
     } finally {
       setUpdateNote('');
-      setUpdateModal({ status: false, id: null })
       fnGetAllNotes();
+      setUpdateModal({ status: false, id: null });
     }
   };
 
@@ -75,8 +78,8 @@ const App = () => {
             onChange={(e) => setNote(e.target.value)}
             className='border pl-[8px] py-[6px] w-full text-[14px]'
           />
-          <button className='bg-[#4A6DA7] px-[8px] rounded-[4px]' onClick={fnAddNote}>
-            <i className="ri-add-line text-white"></i>
+          <button className='bg-[#4A6DA7] px-[8px] rounded-[4px] flex items-center justify-center text-[10px] font-bold text-white min-w-[60px]' onClick={fnAddNote}>
+            {loading.type === 'add' ? 'Loading' : 'Add'}
           </button>
         </div>
 
@@ -105,9 +108,15 @@ const App = () => {
 
       <CustomModal open={updateModal.status} onClose={() => setUpdateModal({ status: false, id: null })} >
         <div className='mt-[20px] flex flex-col gap-[24px]' >
-          <input placeholder='Enter Note' className='py-[6px] pl-[8px] border mt-[24px]' value={updateNote} onChange={(e) => setUpdateNote(e.target.value)} />
+          <input
+            placeholder='Enter Note'
+            className='py-[6px] pl-[8px] border mt-[24px]'
+            value={updateNote}
+            onChange={(e) => setUpdateNote(e.target.value)}
+            onKeyDown={(e) => { if (e.key === 'Enter') { fnUpdateNote(); } }}
+          />
           <button className='bg-[#4A6DA7] text-white py-[4px] rounded-[4px]' onClick={fnUpdateNote} >
-            Update
+            {loading.type === 'update' ? 'Loading' : 'Update'}
           </button>
         </div>
       </CustomModal>
